@@ -1,25 +1,40 @@
-#ifdef SERVER_H
-#define SERVER_H
 #include <vector>
-#include <string>
+#include <cstring>
+#include <iostream>
+#include <thread>
+#include <mutex>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
-
+using namespace std;
 
 class Server {
 public:
-	Server();
+	Server(int port);
+    ~Server();
 	void start();
+    void addAClient();
 	void sendMessage(const std::string& input);
+    
+    string getCurrentTime();
+
+    void sd(){
+        close(serverSocket);
+        
+        for(int client : clientSocket){
+            close(client);
+        }
+
+        running = false;
+
+    }
 
 private:
 	int serverSocket;
-	std::vector<int> clientSocket;
-	std::map<int, std::string> clientName;
-
-
-
-	void acceptingClient();
-	void handlingClient(int clientSocket);
-	void sendMessage(const std::string& message, int senderSocket);
+	vector<int> clientSocket;
+    sockaddr_in  serverAddress;
+    bool running = false;
+    mutex clientMutex;
+    
 };
-#endif

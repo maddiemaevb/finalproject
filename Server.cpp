@@ -1,8 +1,19 @@
 #include <iostream>
 #include "Server.h"
+#include <cstring>
+#include <vector>
+#include <mutex>
+#include <thread>
+#include <netinet/in.h>
+#include <sys/socket.h>
+#include <unistd.h>
 
-Server::Server() {
-	std::cout << "Hello, friend!";
+
+using namespace std;
+
+
+Server::Server(int port) {
+	cout << "Hello, friend!";
 }
 
 
@@ -23,7 +34,7 @@ void Server::start() {
 	}
 }
 
-void Server::sendMessage(const std::string& message, int senderSocket) {
+void Server::sendMessage(const string& message, int senderSocket) {
 	for (int clientSocket : clientSockets) {
 		if (clientSocket != senderSocket) {
 			send(clientSocket, message.c(str(), message.length(), 0);
