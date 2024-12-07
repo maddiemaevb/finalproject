@@ -1,3 +1,6 @@
+#ifdef SERVER_H
+#define SERVER_H
+
 #include <iostream>
 #include "Server.h"
 #include <cstring>
@@ -13,7 +16,7 @@ using namespace std;
 
 
 Server::Server(int port) {
-	cout << "Hello, friend!";
+	cout << "Hello, friend!" << endl;
 }
 
 
@@ -21,16 +24,16 @@ void Server::start() {
 	std::cout << "Please type out any message and type exit to stop our chat!";
 
 	while (true) {
-		std::string message;
-		std::cout << ": ";
-		std::getline(std::cin, message);
+		string message;
+		cout << ": ";
+		getline(cin, message);
 
 		if (message == "exit") {
-			std::cout << "Goodbye!";
+			std::cout << "Goodbye!" << endl;
 			break;
 		}
 
-		sendMessage(message);
+		sendMessage(message, -1);
 	}
 }
 
@@ -40,4 +43,6 @@ void Server::sendMessage(const string& message, int senderSocket) {
 			send(clientSocket, message.c(str(), message.length(), 0);
 		}
 	}
-}
+};
+
+#endif

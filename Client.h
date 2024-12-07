@@ -1,3 +1,6 @@
+#ifdef CLIENT_H
+#define CLIENT_H
+
 #include <string>
 #include <netinet/in.h>
 
@@ -24,3 +27,4 @@ private:
     string username;
 };
     
+#endif

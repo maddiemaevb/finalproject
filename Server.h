@@ -1,3 +1,6 @@
+#ifdef SERVER_H
+#define SERVER_H
+
 #include <vector>
 #include <cstring>
 #include <iostream>
@@ -15,7 +18,7 @@ public:
     ~Server();
 	void start();
     void addAClient();
-	void sendMessage(const std::string& input);
+	void sendMessage(const std::string& message, int senderSocket);
     
     string getCurrentTime();
 
@@ -38,3 +41,5 @@ private:
     mutex clientMutex;
     
 };
+
+#endif
