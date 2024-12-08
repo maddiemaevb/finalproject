@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Client::Client(const string& serverAddr, int serverPort, const string &username) : serverIP(serverIP), serverPort(serverPort), username(username) {}
+Client::Client(const string &serverIP, int serverPort, const string &username) : serverIP(serverIP), serverPort(serverPort), username(username) {}
 
 
 void Client::connectToServer(){
@@ -19,7 +19,7 @@ void Client::connectToServer(){
 
 
     serverAddress.sin_family = AF_INET;
-    serverAddress.sin_port = hton(serverPort);
+    serverAddress.sin_port = htons(serverPort);
     inet_pton(AF_INET, serverIP.c_str(), &serverAddress.sin_addr);
 
     if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1){
@@ -78,4 +78,4 @@ void Client::getMess(){
 
     receiveThread.join();
 }
-
+}

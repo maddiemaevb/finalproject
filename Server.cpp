@@ -53,7 +53,7 @@ void Server::start(){
 }
 
 
-void Server :: newClient(){
+void Server :: addClient(){
     sockaddr_in clientAddress;
     socklen_t clientAddrLen = sizeof(clientAddress);
     int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLen);
