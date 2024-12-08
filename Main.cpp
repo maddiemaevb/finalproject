@@ -18,13 +18,13 @@ int main(int argc, char *argv[]){
     if (mode == "server") {
         Server server(port);
 
-        thread serverThread([&server]() {
+        thread serverThread([&server](){
             server.start();
         });
 
         cout << "Server running on port " << port << ". Type '/shutdown' to close the server." << endl;
 
-        while (true) {
+        while (true){
             string input;
             getline(cin, input);
 
@@ -35,6 +35,24 @@ int main(int argc, char *argv[]){
                 break;
             }
         }
+    } else if (mode == "client"){
+        string username;
+        cout << "Enter your username: ";
+        cin >> username;
+        cin.ignore();
+
+        Client client("127.0.0.1", port, username);
+        try {
+            client.connectToServer();
+            client.start();
+        } catch (const exception &e) {
+            cerr << "Client encountered an error: " << e.what() << endl;
+        }
+    } else {
+        cerr << "Invalid mode. Use 'server' or 'client'." << endl;
+        return 1;
     }
 
+    return 0;
 }
+

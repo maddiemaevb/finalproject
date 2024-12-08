@@ -68,12 +68,10 @@ void Server :: addAClient(){
             string username;
             bool firstMessage = true;
 
-            while (true)
-            {
+            while (true){
                 memset(buffer, 0, sizeof(buffer));
                 int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
-                if (bytesRead <= 0)
-                {
+                if (bytesRead <= 0){
                     lock_guard<mutex> lock(clientMutex);
                     clientSockets.erase(remove(clientSockets.begin(), clientSockets.end(), clientSocket), clientSockets.end());
                     cout << username << " disconnected." << endl;
@@ -81,16 +79,12 @@ void Server :: addAClient(){
                     break;
                 }
 
-                if (firstMessage)
-                {
+                if (firstMessage){
                     username = buffer;
                     cout << username << " joined the chat." << endl;
                     sendMessage(username + " joined the server.", clientSocket);
                     firstMessage = false;
-                }
-                else
-                {
-                    string message = username + ": " + buffer;
+                }else{
                     sendMessage(message, clientSocket);
                 }
             }
