@@ -22,8 +22,7 @@ void Client::connectToServer(){
     serverAddress.sin_port = hton(serverPort);
     inet_pton(AF_INET, serverIP.c_str(), &serverAddress.sin_addr);
 
-    if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1)
-    {
+    if (connect(clientSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) == -1){
         close(clientSocket);
         throw runtime_error("Error connecting to server.");
     }
@@ -38,8 +37,7 @@ void Client::start(){
     thread receiveThread([this]() { listenForMessages(); });
 
     string message;
-    while (true)
-    {
+    while (true){
         getline(cin, message);
         if (message == "/quit")
         {
@@ -56,5 +54,28 @@ void Client::start(){
     receiveThread.join();
 }
 
+void Client::getMess(){
+    char buffer[1024];
+    while(true){
+        send(clientSocket, username.c_str(), username.length(), 0);
 
+    thread receiveThread([this]() { listenForMessages(); });
+
+    string message;
+    while (true){
+        getline(cin, message);
+        if (message == "/quit")
+        {
+            send(clientSocket, "User disconnected", 18, 0);
+            close(clientSocket);
+            cout << "Disconnected from server." << endl;
+            exit(0);
+        }
+
+        string formattedMessage = username + ": " + message;
+        send(clientSocket, formattedMessage.c_str(), formattedMessage.length(), 0);
+    }
+
+    receiveThread.join();
+}
 
