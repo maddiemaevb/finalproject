@@ -18,27 +18,22 @@ public:
     ~Server();
 	void start();
     void addAClient();
-	void sendMessage(const std::string& message, int senderSocket);
+	void sendMessage(const string &message, int senderSocket);
     
     string getCurrentTime();
+    void stopServer();
 
     void sd(){
-        close(serverSocket);
-        
-        for(int client : clientSocket){
-            close(client);
-        }
-
-        running = false;
-
+        stopServer();
     }
 
 private:
 	int serverSocket;
-	vector<int> clientSocket;
+	vector<int> clientSockets;
     sockaddr_in  serverAddress;
-    bool running = false;
+    bool running;
     mutex clientMutex;
+    void closeClients()
     
 };
 

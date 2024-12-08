@@ -1,6 +1,4 @@
-#ifdef SERVER_H
-#define SERVER_H
-
+#include "Server.h"
 #include <iostream>
 #include "Server.h"
 #include <cstring>
@@ -9,14 +7,27 @@
 #include <thread>
 #include <netinet/in.h>
 #include <sys/socket.h>
+#include <algorithm>
 #include <unistd.h>
-
 
 using namespace std;
 
 
-Server::Server(int port) {
-	cout << "Hello, friend!" << endl;
+Server::Server(int port) : running(false){
+    serverSocket = socket(AF_INET, SOCK_STREAM, 0);
+    if (serverSocket == -1)
+    {
+        throw runtime_error("Error creating server socket.");
+    }
+
+	serverAddress.sin_family = AF_INET;
+    serverAddress.sin_port = htons(port);
+    serverAddress.sin_addr.s_addr = INADDR_ANY;
+}
+
+
+Server::~Server(){
+    stopServer();
 }
 
 
@@ -38,11 +49,10 @@ void Server::start() {
 }
 
 void Server::sendMessage(const string& message, int senderSocket) {
-	for (int clientSocket : clientSockets) {
+	for (int clientSocket : clientSocket) {
 		if (clientSocket != senderSocket) {
-			send(clientSocket, message.c(str(), message.length(), 0);
+			send(clientSocket, message.c_str(), message.length(), 0);
 		}
 	}
-};
+}
 
-#endif
