@@ -1,4 +1,4 @@
-#ifdef SERVER_H
+#ifndef SERVER_H
 #define SERVER_H
 
 #include <vector>
@@ -33,7 +33,7 @@ private:
     sockaddr_in  serverAddress;
     bool running;
     mutex clientMutex;
-    void closeClients()
+    void closeClients();
     
 };
 

@@ -1,6 +1,5 @@
 #include "Server.h"
 #include <iostream>
-#include "Server.h"
 #include <cstring>
 #include <vector>
 #include <mutex>
@@ -47,13 +46,13 @@ void Server::start(){
 
     while (running)
     {
-        handleNewClient();
+        addAClient();
     }
 
 }
 
 
-void Server :: addClient(){
+void Server :: addAClient(){
     sockaddr_in clientAddress;
     socklen_t clientAddrLen = sizeof(clientAddress);
     int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddrLen);
@@ -86,13 +85,13 @@ void Server :: addClient(){
                 {
                     username = buffer;
                     cout << username << " joined the chat." << endl;
-                    sendMessageToAll(username + " joined the server.", clientSocket);
+                    sendMessage(username + " joined the server.", clientSocket);
                     firstMessage = false;
                 }
                 else
                 {
                     string message = username + ": " + buffer;
-                    sendMessageToAll(message, clientSocket);
+                    sendMessage(message, clientSocket);
                 }
             }
         }).detach();

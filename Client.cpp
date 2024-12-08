@@ -34,7 +34,7 @@ void Client::connectToServer(){
 void Client::start(){
     send(clientSocket, username.c_str(), username.length(), 0);
 
-    thread receiveThread([this]() { listenForMessages(); });
+    thread receiveThread([this]() { getMess(); });
 
     string message;
     while (true){
@@ -56,26 +56,14 @@ void Client::start(){
 
 void Client::getMess(){
     char buffer[1024];
-    while(true){
-        send(clientSocket, username.c_str(), username.length(), 0);
-
-    thread receiveThread([this]() { listenForMessages(); });
-
-    string message;
     while (true){
-        getline(cin, message);
-        if (message == "/quit")
-        {
-            send(clientSocket, "User disconnected", 18, 0);
+         memset(buffer, 0, sizeof(buffer));
+        int bytesRead = recv(clientSocket, buffer, sizeof(buffer), 0);
+        if (bytesRead <= 0) {
+            cerr << "Disconnected from server." << endl;
             close(clientSocket);
-            cout << "Disconnected from server." << endl;
             exit(0);
         }
-
-        string formattedMessage = username + ": " + message;
-        send(clientSocket, formattedMessage.c_str(), formattedMessage.length(), 0);
+        cout << buffer << endl;
     }
-
-    receiveThread.join();
-}
 }
