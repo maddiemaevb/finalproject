@@ -101,10 +101,48 @@ void Server :: newClient(){
 }
 
 void Server::sendMessage(const string& message, int senderSocket) {
-	for (int clientSocket : clientSocket) {
-		if (clientSocket != senderSocket) {
-			send(clientSocket, message.c_str(), message.length(), 0);
-		}
-	}
+	lock_guard<mutex> lock(clientMutex);
+    string timestamp = getCurrentTime();
+    string formattedMessage = timestamp + " " + message;
+
+    for (int client : clientSockets)
+    {
+        if (client != senderSocket)
+        {
+            send(client, formattedMessage.c_str(), formattedMessage.length(), 0);
+        }
+    }
 }
 
+
+string Server::getCurrentTime(){
+    time_t rawtime;
+    struct tm *timeinfo;
+    char buffer[80];
+    time(&rawtime);
+    timeinfo = localtime(&rawtime);
+    strftime(buffer, sizeof(buffer), "[%Y-%m-%d %H:%M:%S]", timeinfo);
+    return string(buffer);
+}
+
+
+void Server::stopServer(){
+    running = false;
+    close(serverSocket);
+    closeClients();
+}
+
+
+void Server::closeClients(){
+    lock_guard<mutex> lock(clientMutex);
+
+
+    for(int client : clientSockets){
+        close(client);
+    }
+
+
+    clientSockets.clear();
+    cout << "All clients have disconnected. Server is now shutting down..." << endl;
+
+}
