@@ -17,7 +17,7 @@ Server::Server(int port) : running(false){
     serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket == -1)
     {
-        throw runtime_error("Error creating server socket.");
+        throw runtime_error("Error with creating server socket.");
     }
 
 	serverAddress.sin_family = AF_INET;
