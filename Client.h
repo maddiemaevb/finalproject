@@ -16,13 +16,10 @@ public:
 
    
 private:
-    void message(const string &mess);
     void getMess();
-
     int clientSocket;
     sockaddr_in serverAddress;
     string serverIP;
-
     int serverPort;
     string username;
 };

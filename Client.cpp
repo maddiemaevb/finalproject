@@ -6,9 +6,9 @@
 #include <arpa/inet.h>
 #include <unistd.h>
 
+using namespace std;
 
-
-Client::Client(const std::string& serverAddr, int serverPort) {
+Client::Client(const string& serverAddr, int serverPort) {
     
 
 }
