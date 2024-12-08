@@ -31,3 +31,30 @@ void Client::connectToServer(){
     cout << "Connected to server as " << username << "." << endl;
 }
 
+
+void Client::start(){
+    send(clientSocket, username.c_str(), username.length(), 0);
+
+    thread receiveThread([this]() { listenForMessages(); });
+
+    string message;
+    while (true)
+    {
+        getline(cin, message);
+        if (message == "/quit")
+        {
+            send(clientSocket, "User disconnected", 18, 0);
+            close(clientSocket);
+            cout << "Disconnected from server." << endl;
+            exit(0);
+        }
+
+        string formattedMessage = username + ": " + message;
+        send(clientSocket, formattedMessage.c_str(), formattedMessage.length(), 0);
+    }
+
+    receiveThread.join();
+}
+
+
+
